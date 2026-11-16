@@ -5,7 +5,7 @@ using Orders.Core.ViewModels;
 using Orders.Infrastructure.Services.Categories;
 
 namespace Orders.API.Controllers
-{`
+{
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class CategoryController : BaseController
