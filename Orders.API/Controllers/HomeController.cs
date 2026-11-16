@@ -3,11 +3,14 @@ using System.Diagnostics;
 
 namespace Orders.API.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]/[action]")]
     public class HomeController : Controller
     {
+      [HttpGet("/")]
         public IActionResult Index()
         {
-            return Ok("Welcome to Api Project");
+            return Redirect("/swagger");
         }
 
       
