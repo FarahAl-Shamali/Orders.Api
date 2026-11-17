@@ -14,33 +14,33 @@ namespace Orders.API.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public IActionResult GetAll(string searchKey)
+        public async Task<ActionResult> GetAll(string searchKey)
         {
-            var users = _userService.GetAll(searchKey);
+            var users = await _userService.GetAll(searchKey);
             return Ok(GetResponse(users));
         }
         [HttpGet]
-        public IActionResult Get(string Id)
+        public async Task<ActionResult> Get(string Id)
         {
-            var user = _userService.Get(Id);
+            var user = await _userService.Get(Id);
             return Ok(GetResponse(user));
         }
         [HttpPost]
-        public IActionResult Create([FromBody]CreateUserDto dto)
+        public async Task<ActionResult> Create([FromBody]CreateUserDto dto)
         {
-            var savedId = _userService.Create(dto);
+            var savedId = await _userService.Create(dto);
             return Ok(GetResponse(savedId));
         }
         [HttpPut]
-        public IActionResult Update(UpdateUserDto dto)
+        public async Task<ActionResult> Update(UpdateUserDto dto)
         {
-            var savedId = _userService.Update(dto);
+            var savedId = await _userService.Update(dto);
             return Ok(GetResponse(savedId));
         }
         [HttpDelete]
-        public IActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
-            var deletedId = _userService.Delete(id);
+            var deletedId =await _userService.Delete(id);
             return Ok(GetResponse(deletedId));
         }
 

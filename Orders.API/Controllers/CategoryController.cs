@@ -17,37 +17,37 @@ namespace Orders.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAll(string serachkey)
+        public async Task<ActionResult> GetAll(string serachkey)
         {
-            var categories = _categoryService.GetAll(serachkey);
+            var categories =await _categoryService.GetAll(serachkey);
             return Ok(GetResponse(categories));
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            var category = _categoryService.Get(id);
+            var category =await _categoryService.Get(id);
             return Ok(GetResponse(category));
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateCategoryDto dto)
+        public async Task<ActionResult> Create([FromBody] CreateCategoryDto dto)
         {
-            var savedId = _categoryService.Create(dto);
+            var savedId =await _categoryService.Create(dto);
             return Ok(GetResponse(savedId));
         }
 
         [HttpPut]
-        public IActionResult Update(UpdateCategoryDto dto)
+        public async Task<ActionResult> Update(UpdateCategoryDto dto)
         {
-            var savedId = _categoryService.Update(dto);
+            var savedId =await _categoryService.Update(dto);
             return Ok(GetResponse(savedId));
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var deletedId = _categoryService.Delete(id);
+            var deletedId = await _categoryService.Delete(id);
             return Ok(GetResponse(deletedId));
         }
 
