@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Orders.Infrastructure.Services.Auth;
 using Orders.Infrastructure.Services.Categories;
 using Orders.Infrastructure.Services.Users;
 using System;
@@ -13,6 +14,7 @@ namespace Orders.Infrastructure.Extentions
         {
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAuthService, AuthService>();
             return services;
         }
     }

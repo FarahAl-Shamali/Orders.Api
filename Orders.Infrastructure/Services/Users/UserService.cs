@@ -27,7 +27,9 @@ namespace Orders.Infrastructure.Services.Users
         {
             var user = _mapper.Map<User>(dto);
             user.UserName = dto.PhoneNumber;
-           await _userManager.CreateAsync(user, dto.Password);
+            var result = await _userManager.CreateAsync(user, dto.Password);
+            if (!result.Succeeded)
+                throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
             return user.Id;
         }
         public async Task<string> Update(UpdateUserDto dto)
