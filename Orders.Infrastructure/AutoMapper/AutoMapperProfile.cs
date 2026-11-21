@@ -19,6 +19,10 @@ namespace Orders.Infrastructure.AutoMapper
             CreateMap<CreateUserDto, User>();
             CreateMap<UpdateUserDto, User>();
             CreateMap<User, UserViewModel>();
+
+            CreateMap<CreateRestaurantDto, Restaurant>();
+            //CreateMap<UpdateRestaurantDto, Restaurant>();
+            CreateMap<Restaurant, RestaurantViewModel>();
         }
     }
 }

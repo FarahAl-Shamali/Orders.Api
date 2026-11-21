@@ -17,31 +17,31 @@ namespace Orders.API.Controllers
         public async Task<ActionResult> GetAll(string searchKey)
         {
             var users = await _userService.GetAll(searchKey);
-            return Ok(GetResponse(users));
+            return Ok(await GetResponse(users));
         }
         [HttpGet]
         public async Task<ActionResult> Get(string Id)
         {
             var user = await _userService.Get(Id);
-            return Ok(GetResponse(user));
+            return Ok(await GetResponse(user));
         }
         [HttpPost]
         public async Task<ActionResult> Create([FromBody]CreateUserDto dto)
         {
             var savedId = await _userService.Create(dto);
-            return Ok(GetResponse(savedId));
+            return Ok(await GetResponse(savedId));
         }
         [HttpPut]
         public async Task<ActionResult> Update(UpdateUserDto dto)
         {
             var savedId = await _userService.Update(dto);
-            return Ok(GetResponse(savedId));
+            return Ok(await GetResponse(savedId));
         }
         [HttpDelete]
         public async Task<ActionResult> Delete(string id)
         {
             var deletedId =await _userService.Delete(id);
-            return Ok(GetResponse(deletedId));
+            return Ok(await GetResponse(deletedId));
         }
 
     }
