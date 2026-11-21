@@ -2,10 +2,13 @@
 using Azure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Orders.API.Data;
+using Orders.Core.Constants;
 using Orders.Core.Dtos;
 using Orders.Core.Exceptions;
+using Orders.Core.Options;
 using Orders.Core.ViewModels;
 using Orders.Data.Models;
 using Orders.Infrastructure.Services.Users;
@@ -20,13 +23,15 @@ namespace Orders.Infrastructure.Services.Auth
     public class AuthService: IAuthService
     {
         private readonly UserManager<User> _userManager;
+        private readonly JwtOptions _options;
         private readonly OrdersDbContext _db;
         private readonly IMapper _mapper;
-        public AuthService(OrdersDbContext db, UserManager<User> userManager, IMapper mapper)
+        public AuthService(OrdersDbContext db, UserManager<User> userManager, IMapper mapper, IOptions<JwtOptions> options)
         {
             _db = db;
             _userManager = userManager;
             _mapper = mapper;
+            _options = options.Value;
         }
 
         public async Task<LoginResponseViewModel> Login(LoginDto dto)
@@ -36,7 +41,7 @@ namespace Orders.Infrastructure.Services.Auth
             {
                 throw new InvalidUserNameOrPassword();
             }
-            var result =await _userManager.CheckPasswordAsync(user, dto.Password);
+            var result = await _userManager.CheckPasswordAsync(user, dto.Password);
             if (!result)
             {
                 throw new InvalidUserNameOrPassword();
@@ -57,7 +62,7 @@ namespace Orders.Infrastructure.Services.Auth
                    {
                      new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                      new Claim(JwtRegisteredClaimNames.PhoneNumber, user.PhoneNumber),
-                     new Claim("UserId", user.Id),
+                     new Claim(Claims.UserId, user.Id),
                      new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                    };
 
@@ -66,14 +71,14 @@ namespace Orders.Infrastructure.Services.Auth
                 claims.Add(new Claim(ClaimTypes.Role, string.Join(",", roles)));
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("keyvcjfgcjfcgnghnhdxfhnbdbsfbdnbfsbsbds"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecurityKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var expires = DateTime.Now.AddMonths(1);
 
             var accessToken = new JwtSecurityToken(
-                "http://localhost:5112/",
-                "http://localhost:5112/",
+                _options.Issuer,
+               _options.Issuer,
                 claims,
                 expires: expires,
                 signingCredentials: credentials
